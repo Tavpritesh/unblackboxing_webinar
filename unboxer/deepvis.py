@@ -41,15 +41,20 @@ class DeepVis():
             plt.show()
         return interact(plot, layer_id='1',filter_id='0')
 
-    def browse_layer(self):
-        def plot(layer_id):
+    def browse_layer(self, batch_size=50):    
+        def plot(layer_id, batch_id):
+            batch_id = int(batch_id)
+            layer_id = int(layer_id)
+        
+            files = os.listdir('{}/{}'.format(self.save_dir_, layer_id))
             img_list, label_list = [],[]
-            for f in os.listdir('{}/{}'.format(self.save_dir_, layer_id)):
-                print(f)
-                img_list.append(1)
-                label_list.append(1)
-            plot_list(img_list, label_list, cols_nr=6)
-        return interact(plot, layer_id='1',filter_id='0')
+            for f in files[batch_id*batch_size:(batch_id+1)*batch_size]:
+                img = plt.imread('{}/{}/{}/img.jpg'.format(self.save_dir_, layer_id, f))
+                img_list.append(img)
+                label_list.append(f)
+            plot_list(img_list, label_list, cols_nr=5)
+            
+        return interact(plot, layer_id='16', batch_id='0')
 
     def generate_max_activation_images(self, layer_ids):
     

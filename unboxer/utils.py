@@ -229,7 +229,7 @@ def plot_folder(folder,extensions = ['jpg','jpeg','png','bmp'],**kwargs):
     img_list = [plt.imread(f) for f in filepaths]
     plot_list(img_list,**kwargs)
 
-def plot_list(img_list,labels = None, cols_nr = None):
+def plot_list(img_list,labels = None, cols_nr = None, **kwargs):
     '''
         Plots a list of images in a grid with labels if specified
         Inputs:
@@ -243,7 +243,8 @@ def plot_list(img_list,labels = None, cols_nr = None):
     if not cols_nr:
         cols_nr = int(np.sqrt(n))
     rows_nr = np.ceil(1.0*n/cols_nr)
-
+    
+    plt.figure(figsize=(20,40))
     if labels is not None:       
         for i,(img,lab) in enumerate(zip(img_list,labels)):
             plt.subplot(rows_nr,cols_nr,i+1)

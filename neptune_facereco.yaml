@@ -2,6 +2,7 @@ name: Facial Recognition
 description: A convolutional neural network recognizing faces.
 project: Neptune Webinar
 tags: [tensorboard, facereco]
+requirements:[gpu]
 
 storage: /mnt/ml-team/homes/jakub.czakon/neptune_storage
 
