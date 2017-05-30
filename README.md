@@ -12,7 +12,7 @@
 ![query](resources/readme_pics/saliency.jpg)
 - Maximal Activation Image
 
-![query](resources/readme_pics/mai.jpg)
+![query](resources/readme_pics/deepvis.jpg)
 - Quiver
 
 ![query](resources/readme_pics/quiver.jpg)
