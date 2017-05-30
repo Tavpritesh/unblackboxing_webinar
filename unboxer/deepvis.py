@@ -19,6 +19,8 @@ from ipywidgets import interact
 from IPython.html import widgets
 from IPython.display import display
 
+from unboxer.utils import plot_list
+
 
 class DeepVis():
     def __init__(self, model_architecture, save_dir):
@@ -38,7 +40,17 @@ class DeepVis():
             plt.imshow(img)
             plt.show()
         return interact(plot, layer_id='1',filter_id='0')
-        
+
+    def browse_layer(self):
+        def plot(layer_id):
+            img_list, label_list = [],[]
+            for f in os.listdir('{}/{}'.format(self.save_dir_, layer_id)):
+                print(f)
+                img_list.append(1)
+                label_list.append(1)
+            plot_list(img_list, label_list, cols_nr=6)
+        return interact(plot, layer_id='1',filter_id='0')
+
     def generate_max_activation_images(self, layer_ids):
     
         for layer_id in layer_ids:

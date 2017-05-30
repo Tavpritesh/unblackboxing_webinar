@@ -26,4 +26,4 @@ if __name__ == '__main__':
         face_classifier = FaceClassifier(input_shape=(125, 94, 3), classes=5, 
                                          model_save_filepath=MODEL_FILEPATH)
     
-    face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=8, epochs=30)
+    face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=16, epochs=100)
