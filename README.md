@@ -6,28 +6,27 @@
 
 - Class Activation Maps
 
-![query](resources/readme_pics/cam.jpg)
+![query](resources/readme_pics/cam.pn1g)
 - Saliency Maps
 
-![query](resources/readme_pics/saliency.jpg)
+![query](resources/readme_pics/saliency.png)
 - Maximal Activation Image
 
-![query](resources/readme_pics/mai.jpg)
+![query](resources/readme_pics/deepvis.png)
 - Quiver
 
-![query](resources/readme_pics/quiver.jpg)
-- Neptune
-
-![query](resources/readme_pics/neptune.jpg)
-- Tensorboard
-
-![query](resources/readme_pics/tensorboard.jpg)
+![query](resources/readme_pics/quiver.png)
 - TSNE
 
-![query](resources/readme_pics/tsne.jpg)
-- LIME
+![query](resources/readme_pics/tsne.png)
+- Neptune
 
-![query](resources/readme_pics/lime.jpg)
+![query](resources/readme_pics/neptune.png)
+- Tensorboard
+
+![query](resources/readme_pics/tensorboard.png)
+
+
 
 ## Resources and Acknowledgements
 Thank you all for letting the world use this!
