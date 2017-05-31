@@ -6,7 +6,7 @@ from facial_recognition.model import FaceClassifier, FaceClassifierNeptune
 
 NEPTUNE = True
 DATA_DIR = '/mnt/ml-team/homes/jakub.czakon/.data/scikit_learn_data'
-MODEL_FILEPATH = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models/facenet.h5py'
+MODEL_FILEPATH = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models/facenetwebinar.h5py'
 
 
 if __name__ == '__main__':

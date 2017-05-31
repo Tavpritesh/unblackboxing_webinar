@@ -244,7 +244,7 @@ def plot_list(img_list,labels = None, cols_nr = None, **kwargs):
         cols_nr = int(np.sqrt(n))
     rows_nr = np.ceil(1.0*n/cols_nr)
     
-    plt.figure(figsize=(20,40))
+    plt.figure(figsize=(20,20))
     if labels is not None:       
         for i,(img,lab) in enumerate(zip(img_list,labels)):
             plt.subplot(rows_nr,cols_nr,i+1)
