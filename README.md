@@ -16,18 +16,17 @@
 - Quiver
 
 ![query](resources/readme_pics/quiver.png)
+- TSNE
+
+![query](resources/readme_pics/tsne.png)
 - Neptune
 
 ![query](resources/readme_pics/neptune.png)
 - Tensorboard
 
 ![query](resources/readme_pics/tensorboard.png)
-- TSNE
 
-![query](resources/readme_pics/tsne.png)
-- LIME
 
-![query](resources/readme_pics/lime.png)
 
 ## Resources and Acknowledgements
 Thank you all for letting the world use this!
