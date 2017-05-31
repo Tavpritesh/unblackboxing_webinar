@@ -6,7 +6,7 @@
 
 - Class Activation Maps
 
-![query](resources/readme_pics/cam.png)
+![query](resources/readme_pics/cam.pn1g)
 - Saliency Maps
 
 ![query](resources/readme_pics/saliency.png)
