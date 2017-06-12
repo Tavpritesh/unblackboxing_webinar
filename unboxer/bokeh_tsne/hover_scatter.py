@@ -14,7 +14,7 @@ from ipywidgets import interact
 COLOR_PALETTE = sns.color_palette("Set2", 20)
 
 
-def scatterplot(df, **kwargs):
+def scatterplot_vis(df, **kwargs):
     plot_width = kwargs.get('plot_width',300)
     plot_height = kwargs.get('plot_height',300)
     size = kwargs.get('size',10)
@@ -31,6 +31,36 @@ def scatterplot(df, **kwargs):
                 ></img>
             </div>
             
+        </div>
+        """
+    )
+
+    p = figure(plot_width=plot_width, plot_height=plot_height, 
+               toolbar_location = 'right',
+               tools='pan,box_zoom,wheel_zoom,reset,resize')
+    p.add_tools(hover)
+
+    df['label_color'] = df['label'].apply(lambda x: COLOR_PALETTE.as_hex()[int(x)])
+    source = ColumnDataSource(df)
+    circles = p.circle('x', 'y', size=size, source=source)
+    circles.glyph.fill_color = 'label_color'
+
+    output_notebook()
+    show(p)
+    
+def scatterplot_text(df, **kwargs):
+    plot_width = kwargs.get('plot_width',300)
+    plot_height = kwargs.get('plot_height',300)
+    size = kwargs.get('size',10)
+    
+    hover = HoverTool(
+        tooltips="""
+        <div>
+            <div>
+                <p>
+                    @text
+                </p>
+            </div>            
         </div>
         """
     )

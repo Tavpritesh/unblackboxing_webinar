@@ -3,19 +3,30 @@ import pandas as pd
 from sklearn.manifold import TSNE
 
 from unboxer.bokeh_tsne.utils import *
-from unboxer.bokeh_tsne.hover_scatter import scatterplot
+from unboxer.bokeh_tsne.hover_scatter import scatterplot_vis, scatterplot_text
 
 
-class TsneVis():
-    def __init__(self, model, feature_layer_name, **tsne_kwargs):
+class TsneBasic(object):
+    def __init__(self, model, **tsne_kwargs):
         self.tsne_model_ = TSNE(**tsne_kwargs)
-        self.model_ = model
+        self.model_ = model       
+        self.tsne_features_ = None 
+
+    def plot(self, **kwargs):
+        pass
+        
+    def fit(self):
+        pass
+        
+
+class TsneVis(TsneBasic):
+    
+    def __init__(self, model, feature_layer_name, **tsne_kwargs):
+        super(TsneVis, self).__init__(model, **tsne_kwargs)
         self.feature_layer_name_ = feature_layer_name
         
-        self.tsne_features_ = None
-    
     def plot(self, **kwargs):
-        scatterplot(self.tsne_features_, **kwargs)
+        scatterplot_vis(self.tsne_features_, **kwargs)
     
     def fit(self, img_folder, label_df=pd.DataFrame(), batch_size=2):
         img_input_shape = self.model_.input_shape[1:-1]
@@ -49,3 +60,36 @@ class TsneVis():
         nr_imgs = img_features.shape[0]
         img_features = np.reshape(img_features,(nr_imgs, new_shape))
         return img_features
+    
+    
+class TsneText(TsneBasic):
+               
+    def plot(self, **kwargs):
+        scatterplot_text(self.tsne_features_, **kwargs)
+    
+    def fit(self, word_corpus, highlight_words=None):
+        word_features = self._extract_features(word_corpus)
+        
+        tsne_features = self.tsne_model_.fit_transform(word_features)
+        
+        df = pd.DataFrame(tsne_features, columns=['x','y'])
+        df['text'] = word_corpus
+        df.sort_values('text', inplace=True)
+
+        def highlight(x):
+            if x in highlight_words:
+                return 1
+            else:
+                return 0
+        if highlight_words:
+            df['label'] = df['text'].apply(highlight)
+        else:
+            df['label'] = 0
+        self.tsne_features_ = df
+        
+    def _extract_features(self, X):
+        vectors = []
+        for w in X:
+            w_id = self.model_.dictionary[w]
+            vectors.append(self.model_.word_vectors[w_id])
+        return np.stack(vectors, axis=0)

@@ -6,7 +6,7 @@ from facial_recognition.model import FaceClassifier, FaceClassifierNeptune
 
 NEPTUNE = True
 DATA_DIR = '/mnt/ml-team/homes/jakub.czakon/.data/scikit_learn_data'
-MODEL_FILEPATH = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models/facenetwebinar.h5py'
+MODEL_FILEPATH = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models/facenet.h5py'
 
 
 if __name__ == '__main__':
@@ -26,4 +26,8 @@ if __name__ == '__main__':
         face_classifier = FaceClassifier(input_shape=(125, 94, 3), classes=5, 
                                          model_save_filepath=MODEL_FILEPATH)
     
+<<<<<<< HEAD
     face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=16, epochs=100)
+=======
+    face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=8, epochs=30)
+>>>>>>> 00b314053b14c2a499ccfd8096bdd2e361ffa7eb
