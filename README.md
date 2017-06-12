@@ -6,7 +6,7 @@
 
 - Class Activation Maps
 
-![query](resources/readme_pics/cam.pn1g)
+![query](resources/readme_pics/cam.png)
 - Saliency Maps
 
 ![query](resources/readme_pics/saliency.png)
@@ -21,7 +21,7 @@
 ![query](resources/readme_pics/tsne.png)
 - Neptune
 
-![query](resources/readme_pics/neptune.png)
+![query](resources/readme_pics/neptune.png)![map](resources/readme_pics/neptune_image_channel.png)
 - Tensorboard
 
 ![query](resources/readme_pics/tensorboard.png)
