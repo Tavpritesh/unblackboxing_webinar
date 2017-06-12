@@ -25,7 +25,12 @@
 - Tensorboard
 
 ![query](resources/readme_pics/tensorboard.png)
+- LIME
 
+![query](resources/readme_pics/lime.png)
+- Attention
+
+![query](resources/readme_pics/attention.png)
 
 
 ## Resources and Acknowledgements
