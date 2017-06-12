@@ -54,8 +54,6 @@ https://jacobgil.github.io/deeplearning/class-activation-maps
 
 https://arxiv.org/abs/1312.6034
 
-http://blog.datadive.net/random-forest-interpretation-conditional-feature-contributions/
-
 http://p.migdal.pl/2017/01/06/king-man-woman-queen-why.html
 
 https://nlp.stanford.edu/projects/glove/
