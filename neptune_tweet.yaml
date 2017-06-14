@@ -1,10 +1,8 @@
-name: Facial Recognition
-description: A convolutional neural network recognizing faces.
+name: Tweet Sentiment
+description: A recurrent neural network for classifying tweets.
 project: Neptune Webinar
-tags: [tensorboard, facereco]
-
+tags: [sentiment, twitter]
 storage: /mnt/ml-team/homes/jakub.czakon/neptune_storage
-
 parameters:
   - name: x
     description: Example string parameter.
