@@ -25,7 +25,12 @@
 - Tensorboard
 
 ![query](resources/readme_pics/tensorboard.png)
+- LIME
 
+![query](resources/readme_pics/lime.png)
+- Attention
+
+![query](resources/readme_pics/attention.png)
 
 
 ## Resources and Acknowledgements
@@ -49,7 +54,21 @@ https://jacobgil.github.io/deeplearning/class-activation-maps
 
 https://arxiv.org/abs/1312.6034
 
-http://blog.datadive.net/random-forest-interpretation-conditional-feature-contributions/
+http://p.migdal.pl/2017/01/06/king-man-woman-queen-why.html
+
+https://nlp.stanford.edu/projects/glove/
+
+https://github.com/philipperemy/keras-attention-mechanism
+
+https://medium.com/@plusepsilon/visualizations-of-recurrent-neural-networks-c18f07779d56
+
+https://richliao.github.io/supervised/classification/2016/12/26/textclassifier-RNN/
+
+https://arxiv.org/pdf/1409.0473.pdf
+
+https://gist.github.com/wassname/5292f95000e409e239b9dc973295327a
+
+https://gist.github.com/nigeljyng/37552fb4869a5e81338f82b338a304d3
 
 
 ## This is us
