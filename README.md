@@ -58,6 +58,8 @@ http://p.migdal.pl/2017/01/06/king-man-woman-queen-why.html
 
 https://nlp.stanford.edu/projects/glove/
 
+http://blog.echen.me/2017/05/30/exploring-lstms/
+
 https://github.com/philipperemy/keras-attention-mechanism
 
 https://medium.com/@plusepsilon/visualizations-of-recurrent-neural-networks-c18f07779d56
