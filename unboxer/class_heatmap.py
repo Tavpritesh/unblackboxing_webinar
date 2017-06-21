@@ -64,10 +64,11 @@ class ClassHeatmap():
         def _plot(label_id):
             label_id = int(label_id)
             text_label = get_pred_text_label(label_id)
+            label_proba = np.round(predictions[0,label_id], 4)
             heatmap = vis_func(img,label_id)
             for p in text_prediction[0]:
                 print(p[1:]) 
-            plt.title(text_label)
+            plt.title('label:%s\nscore:%s'%(text_label,label_proba))
             plt.imshow(heatmap)
             plt.show()
             
