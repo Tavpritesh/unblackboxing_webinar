@@ -12,7 +12,7 @@ def arch_lstm(embedding_layer, sequence_length, classes):
     x = LSTM(128, activation='sigmoid', inner_activation='hard_sigmoid', 
              return_sequences=False)(x)
     x = Dense(256, activation='relu')(x)
-    tweet_output = Dense(classes, activation='softmax')(x)      
+    tweet_output = Dense(classes, activation='softmax', name='predictions')(x)      
 
     tweetnet = Model(tweet_input, tweet_output)
     tweetnet.compile(optimizer='adam',
@@ -27,7 +27,7 @@ def arch_conv1d(embedding_layer, sequence_length, classes):
     x = MaxPooling1D(5)(x)
     x = Flatten()(x)
     x = Dense(256, activation='relu')(x)
-    tweet_output = Dense(classes, activation='softmax')(x)      
+    tweet_output = Dense(classes, activation='softmax',name='predictions')(x)      
 
     tweetnet = Model(tweet_input, tweet_output)
     tweetnet.compile(optimizer='adam',
@@ -50,7 +50,7 @@ def arch_attention(embedding_layer, sequence_length, classes):
     sent_representation = merge([activations, attention], mode='mul')
     sent_representation = Lambda(lambda xin: K.sum(xin, axis=1), name='merged_layer')(sent_representation)
 
-    tweet_output = Dense(classes, activation='softmax', name='output_layer')(sent_representation)      
+    tweet_output = Dense(classes, activation='softmax', name='predictions')(sent_representation)      
 
     tweetnet = Model(tweet_input, tweet_output)
     tweetnet.compile(optimizer='adam',

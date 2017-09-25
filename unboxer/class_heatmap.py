@@ -65,10 +65,3 @@ class ClassHeatmap():
             plt.show()
             
         return interact(_plot, label_id='1')
-    
-def prep_model_for_cam(model, out_layer_name='predictions'):
-    layer_idx = utils.find_layer_idx(model, out_layer_name)
-
-    model.layers[layer_idx].activation = activations.linear
-    model = utils.apply_modifications(model)
-    return model

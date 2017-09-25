@@ -1,21 +1,27 @@
 import glob
-
 from copy import deepcopy
 import json
 
 import numpy as np
 from random import choice
-
 from scipy.misc import imresize
 from matplotlib import pyplot as plt
-
 from keras.applications.imagenet_utils import preprocess_input,decode_predictions
 from keras.preprocessing import image 
 from keras.applications.vgg16 import VGG16
 from keras.layers import Input
 from keras import backend as K
-
+from keras import activations
 from keras.utils.data_utils import get_file
+from vis.utils.utils import find_layer_idx, apply_modifications
+
+
+def prep_model_for_vis(model, out_layer_name='predictions'):
+    layer_idx = find_layer_idx(model, out_layer_name)
+
+    model.layers[layer_idx].activation = activations.linear
+    model = apply_modifications(model)
+    return model
 
 def softmax(x):
     return np.exp(x)/np.sum(np.exp(x))

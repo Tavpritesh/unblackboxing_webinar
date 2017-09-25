@@ -32,7 +32,7 @@ class FaceClassifier(object):
         x = Flatten(name='flatten')(x)
         x = Dense(128, activation='relu', name='fc1')(x)
         x = Dense(128, activation='relu', name='fc2')(x)
-        output = Dense(classes, activation='softmax', name='output')(x)
+        output = Dense(classes, activation='softmax', name='predictions')(x)
 
         self.facenet = Model(face_input, output)
         self.facenet.compile(optimizer='adam',

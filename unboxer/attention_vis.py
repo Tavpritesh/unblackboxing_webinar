@@ -40,7 +40,7 @@ class AttentionVisualizer(TweetPredictor):
         functions = self._get_output_functions()
         outputs = functions([X,0])
         
-        names = ['recurrent_layer','attention_layer','merged_layer', 'output_layer']
+        names = ['recurrent_layer','attention_layer','merged_layer', 'predictions']
         names = ['%s_%s'%(ni, nj) for ni in names for nj in ['activation','gradient']] 
         activations_gradients = {n:o for n,o in zip(names,outputs)}  
         
@@ -53,7 +53,7 @@ class AttentionVisualizer(TweetPredictor):
             if not activations:
                 if 'activation' in k:
                     continue            
-            if 'output' in k:
+            if 'predictions' in k:
                 continue
                 
             v = np.squeeze(v)

@@ -1,35 +1,22 @@
 import sys, os
 
 import numpy as np
-
-from keras.preprocessing.image import img_to_array
-from keras.applications.imagenet_utils import preprocess_input,decode_predictions
-
-if sys.version_info.major == 3:
-    from vis_py3.visualization import visualize_activation
-    from vis_py3.utils.vggnet import VGG16
-    from vis_py3.utils.utils import load_img, bgr2rgb
-else:
-    from vis.visualization import visualize_activation
-    from vis.utils.vggnet import VGG16
-    from vis.utils.utils import load_img, bgr2rgb   
-    
 import matplotlib.pyplot as plt
 from ipywidgets import interact
 from IPython.html import widgets
 from IPython.display import display
+from keras.preprocessing.image import img_to_array
+from keras.applications.imagenet_utils import preprocess_input,decode_predictions
+from vis.visualization import visualize_activation
+from vis.utils import utils  
 
-from unboxer.utils import plot_list
+from unboxer.utils import plot_list, prep_model_for_vis
 
 
 class DeepVis():
-    def __init__(self, model_architecture, save_dir):
-        if model_architecture == 'vgg16':
-            self.model_ = VGG16(weights='imagenet', include_top=True)
-            self.layer_filter_ids_ = self._build_layer_filter_dict(self.model_)  
-        else:
-            pass
-         
+    def __init__(self, model, save_dir):
+        self.model_ = model
+        self.layer_filter_ids_ = self._build_layer_filter_dict(self.model_)           
         self.save_dir_ = save_dir
     
     def browse(self):
@@ -64,15 +51,12 @@ class DeepVis():
                 maximal_activation_image = self.find_mai(layer_id,filter_id)
                 self.save(layer_id, filter_id, maximal_activation_image)
                 
-    def find_mai(self, layer_id, filter_id):
-        no_tv_seed_img = visualize_activation(self.model_, layer_id, 
-                                              filter_indices=[filter_id],
-                                              tv_weight=0, verbose=False)
-        post_tv_img = visualize_activation(self.model_, layer_id, 
-                                           filter_indices=[filter_id],
-                                           tv_weight=1, seed_img=no_tv_seed_img, 
-                                           verbose=False, max_iter=100)
-        return post_tv_img
+    def find_mai(self, layer_id, filter_id):        
+        img = visualize_activation(model=self.model_, 
+                                   layer_idx=layer_id, 
+                                   filter_indices=[filter_id], 
+                                   max_iter=10, verbose=False)
+        return img
     
     def save(self, layer_id, filter_id, img):
         directory = '{}/{}/{}'.format(self.save_dir_, layer_id, filter_id)
