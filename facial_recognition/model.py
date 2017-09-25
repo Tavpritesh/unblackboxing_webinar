@@ -1,5 +1,6 @@
-import tensorflow as tf
+from __future__ import absolute_import
 
+import tensorflow as tf
 from keras.layers import Conv2D, MaxPooling2D, Input, Dense, Flatten
 from keras.models import Model
 from keras.preprocessing.image import ImageDataGenerator
@@ -31,15 +32,14 @@ class FaceClassifier(object):
         x = pretrained_model.output
 
         x = Flatten(name='flatten')(x)
-        x = Dense(512, activation='relu', name='fc1')(x)
-        x = Dense(512, activation='relu', name='fc2')(x)
+        x = Dense(128, activation='relu', name='fc1')(x)
+        x = Dense(128, activation='relu', name='fc2')(x)
         output = Dense(classes, activation='softmax', name='output')(x)
 
-        facenet = Model(face_input, output)
-        facenet.compile(optimizer='adam',
+        self.facenet = Model(face_input, output)
+        self.facenet.compile(optimizer='adam',
                         loss='categorical_crossentropy',
                         metrics=['accuracy'])
-        self.facenet = facenet
         self.facenet.summary()
         
         self.datagen = ImageDataGenerator(rotation_range=5,
@@ -61,7 +61,8 @@ class FaceClassifier(object):
         self.facenet.fit_generator(self.datagen.flow(X_train, y_train, batch_size),
                           steps_per_epoch=steps,
                           validation_data=[X_valid, y_valid],
-                          callbacks=[batch_end_callback, epoch_end_callback, tensorboard_callback, checkpoint],
+                          callbacks=[batch_end_callback, epoch_end_callback, #tensorboard_callback, 
+                                     checkpoint],
                           **kwargs)  
         K.set_session(self.old_session)
 

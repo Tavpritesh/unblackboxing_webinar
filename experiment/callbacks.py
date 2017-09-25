@@ -1,5 +1,6 @@
-import numpy as np
+from __future__ import absolute_import
 
+import numpy as np
 from keras.callbacks import Callback, TensorBoard, ModelCheckpoint
 
 from experiment.utils import false_prediction_neptune_image, TARGET_NAMES
