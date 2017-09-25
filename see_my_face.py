@@ -2,13 +2,15 @@ from sklearn.datasets import fetch_lfw_people
 
 from facial_recognition.preprocessing import lfw_train_test_split, FacePreprocessor, tensor2img, img2tensor
 
-NEPTUNE = False
-DATA_DIR = '/mnt/ml-team/homes/jakub.czakon/.data/scikit_learn_data'
-MODEL_FILEPATH = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models/facenet.h5py'
-
+NEPTUNE = True
 if NEPTUNE:
+    DATA_DIR = '/mnt/ml-team/homes/jakub.czakon/.data/scikit_learn_data'
+    MODEL_FILEPATH = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models/facenet.h5py'
     from facial_recognition.model import FaceClassifierNeptune as FaceClassifier
+
 else:
+    DATA_DIR = 'input/scikit_learn_data'
+    MODEL_FILEPATH = 'input/models/facenet.h5py'
     from facial_recognition.model import FaceClassifier
 
 

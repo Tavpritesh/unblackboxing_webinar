@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import numpy as np
 from keras.callbacks import Callback, TensorBoard, ModelCheckpoint
 
