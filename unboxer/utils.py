@@ -15,6 +15,12 @@ from keras import activations
 from keras.utils.data_utils import get_file
 from vis.utils.utils import find_layer_idx, apply_modifications
 
+def load_query_image(filepath, tensor=False):
+    img = image.load_img(filepath)
+    img = image.img_to_array(img)
+    if tensor:
+        img = np.expand_dims(img, axis=0)
+    return img
 
 def prep_model_for_vis(model, out_layer_name='predictions'):
     layer_idx = find_layer_idx(model, out_layer_name)
@@ -24,8 +30,9 @@ def prep_model_for_vis(model, out_layer_name='predictions'):
     return model
 
 def softmax(x):
-    return np.exp(x)/np.sum(np.exp(x))
-
+    e_x = np.exp(x - np.max(x))
+    return e_x / e_x.sum()
+    
 def get_images_from_directory(dir_path,extensions = ['jpg','jpeg','png']):
     '''
         Extracts filepaths of all the images with specified extensions from a folder

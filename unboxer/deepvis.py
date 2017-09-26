@@ -55,7 +55,7 @@ class DeepVis():
         img = visualize_activation(model=self.model_, 
                                    layer_idx=layer_id, 
                                    filter_indices=[filter_id], 
-                                   max_iter=10, verbose=False)
+                                   max_iter=500, verbose=False)
         return img
     
     def save(self, layer_id, filter_id, img):

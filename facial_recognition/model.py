@@ -30,29 +30,26 @@ class FaceClassifierBasic(object):
         pretrained_model = VGG16(input_tensor=face_input, 
                                  weights='imagenet', 
                                  include_top=False)
-        for i, layer in enumerate(pretrained_model.layers):
-            if i < 13: layer.trainable = False
-        x = pretrained_model.output
+        x = pretrained_model.get_layer('block4_pool').output
 
         x = Flatten(name='flatten')(x)
-        x = Dense(128, activation='relu', name='fc1')(x)
-        x = Dense(128, activation='relu', name='fc2')(x)
+        x = Dense(256, activation='relu', name='fc1')(x)
+        x = Dense(256, activation='relu', name='fc2')(x)
         output = Dense(classes, activation='softmax', name='predictions')(x)
 
         self.facenet = Model(face_input, output)
         self.facenet.compile(optimizer='adam',
-                        loss='categorical_crossentropy',
-                        metrics=['accuracy'])
+                             loss='categorical_crossentropy',
+                             metrics=['accuracy'])
         self.facenet.summary()
         
         self.datagen = ImageDataGenerator(rotation_range=5,
-                                     horizontal_flip=True, 
-                                     vertical_flip=True)       
+                                          horizontal_flip=False, 
+                                          vertical_flip=True)       
 
     def train(self, train, valid, batch_size, **kwargs):
         X_train, y_train = train
         X_valid, y_valid = valid
-        self.datagen.fit(X_train)
         steps = len(X_train)/batch_size
         
         tensorboard_callback = TensorBoardCallback(batch_size)

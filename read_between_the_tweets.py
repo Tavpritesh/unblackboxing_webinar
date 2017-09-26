@@ -1,6 +1,6 @@
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 import pandas as pd
 from sklearn.externals import joblib
@@ -15,12 +15,12 @@ from twitter_sentiment.model import TweetClassifier
 MAX_WORDS = 20000
 MAX_SEQ_LEN = 30
 EMBEDDING_DIM = 50
-ARCHITECTURE = arch_conv1d
+ARCHITECTURE = arch_lstm
 LOCAL_DIR = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models'
 REMOTE_DIR = ''
 EMBEDDING_MODEL_FILENAME = 'glove.twitter.27B.50d.txt'
 PREP_DUMP_FILENAME = 'tweet_preprocessor.pkl'
-CLASS_DUMP_FILENAME = 'tweetnetConv1ds.h5py'
+CLASS_DUMP_FILENAME = 'tweetnetLSTM.h5'
 NEPTUNE = False
 if NEPTUNE:   
     DATA_FILEPATH = 'input/tweets/Sentiment Analysis Dataset.csv'
@@ -55,4 +55,4 @@ if __name__ == '__main__':
                                        model_save_filepath=CLASS_DUMP_FILEPATH, 
                                        neptune=NEPTUNE)       
     
-    tweet_classifier.train((X_train, y_train), (X_test, y_test), batch_size=128, epochs=10, verbose=2)
+    tweet_classifier.train((X_train, y_train), (X_test, y_test), batch_size=128, epochs=20, verbose=2)

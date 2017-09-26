@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 from ipywidgets import interact
 import numpy as np
+import pandas as pd
 from keras.preprocessing.image import img_to_array
 from keras import activations
 from keras.applications.imagenet_utils import preprocess_input,decode_predictions
-from vis.visualization import visualize_cam, visualize_saliency
+from vis.visualization import visualize_cam, visualize_saliency, overlay
 from vis.utils import utils
 
 from unboxer.utils import img2tensor, get_pred_text_label, softmax
@@ -39,29 +40,46 @@ class ClassHeatmap():
 
         return heatmap
 
-    def plot_cam(self, img_path):
-        return self.plot(self.generate_cam, img_path)
+    def plot_cam(self, img_path, label_list=None):
+        return self.plot(self.generate_cam, img_path, label_list)
     
-    def plot_saliency(self, img_path):
-        return self.plot(self.generate_saliency, img_path)
+    def plot_saliency(self, img_path, label_list=None):
+        return self.plot(self.generate_saliency, img_path, label_list)
     
-    def plot(self, vis_func, img_path):
+    def plot(self, vis_func, img_path, label_list):
         img = utils.load_img(img_path, target_size=self.img_shape_)
         img = img[:,:,:3]
         
         predictions = self.model_.predict(img2tensor(img, self.img_shape_))
         predictions = softmax(predictions)
-        text_prediction = decode_predictions(predictions)
         
-        def _plot(label_id):
-            label_id = int(label_id)
-            text_label = get_pred_text_label(label_id)
-            label_proba = np.round(predictions[0,label_id], 4)
-            heatmap = vis_func(img,label_id)
-            for p in text_prediction[0]:
-                print(p[1:]) 
-            plt.title('label:%s\nscore:%s'%(text_label,label_proba))
-            plt.imshow(heatmap)
-            plt.show()
-            
+        if not label_list:
+            prediction_text = decode_predictions(predictions)[0]
+            def _plot(label_id):
+                label_id = int(label_id)
+                text_label = get_pred_text_label(label_id)
+                label_proba = np.round(predictions[0,label_id], 4)
+                heatmap = vis_func(img, label_id)
+                for p in prediction_text:
+                    print(p[1:]) 
+                plt.subplot(1,2,1)
+                plt.title('label:%s\nscore:%s'%(text_label,label_proba))
+                plt.imshow(overlay(heatmap, img))
+                plt.subplot(1,2,2)
+                plt.imshow(img)
+                plt.show()
+        else:
+            def _plot(label_id):
+                print(pd.DataFrame(predictions, columns=label_list))
+                label_id = int(label_id)
+                text_label = label_list[label_id]
+                label_proba = np.round(predictions[0,label_id], 4)
+                heatmap = vis_func(img,label_id)
+                plt.subplot(1,2,1)
+                plt.title('label:%s\nscore:%s'%(text_label,label_proba))
+                plt.imshow(overlay(heatmap, img))
+                plt.subplot(1,2,2)
+                plt.imshow(img)
+                plt.show()       
+
         return interact(_plot, label_id='1')

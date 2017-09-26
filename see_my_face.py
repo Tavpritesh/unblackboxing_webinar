@@ -9,18 +9,7 @@ from facial_recognition.model import FaceClassifier
 
 LOCAL_DIR = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models'
 REMOTE_DIR = 'input/'
-MODEL_FILENAME = 'facenet.h5py'
-
-if NEPTUNE:   
-    MODEL_FILEPATH = os.path.join(REMOTE_DIR, EMBEDDING_MODEL_FILENAME)
-    DATA_FILEPATH = os.path.join(REMOTE_DIR, DATA_FILENAME)
-    PREP_DUMP_FILEPATH = os.path.join(REMOTE_DIR, PREP_DUMP_FILENAME)
-    CLASS_DUMP_FILEPATH = os.path.join(REMOTE_DIR, CLASS_DUMP_FILENAME)
-else:
-    MODEL_FILEPATH = os.path.join(LOCAL_DIR, EMBEDDING_MODEL_FILENAME)
-    DATA_FILEPATH = os.path.join(LOCAL_DIR, DATA_FILENAME)
-    PREP_DUMP_FILEPATH = os.path.join(LOCAL_DIR, PREP_DUMP_FILENAME)
-    CLASS_DUMP_FILEPATH = os.path.join(LOCAL_DIR, CLASS_DUMP_FILENAME)
+MODEL_FILENAME = 'facenet.h5'
 
 NEPTUNE = False
 if NEPTUNE:
@@ -34,7 +23,7 @@ if __name__ == '__main__':
     
     lfw_people = fetch_lfw_people(min_faces_per_person=100, resize=1.0, color=True, data_home=SCIKIT_DATA_DIR)
 
-    (X_train, y_train), (X_test,y_test) = lfw_train_test_split(lfw_people, train_size=0.8)
+    (X_train, y_train), (X_test,y_test) = lfw_train_test_split(lfw_people, train_size=0.7)
     print('Data loaded')
     
     face_prep = FacePreprocessor()
@@ -45,4 +34,4 @@ if __name__ == '__main__':
     face_classifier = FaceClassifier(input_shape=(125, 94, 3), classes=5, 
                                       model_save_filepath=MODEL_FILEPATH, neptune=NEPTUNE)
 
-    face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=8, epochs=30)
+    face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=64, epochs=100)
