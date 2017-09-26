@@ -34,6 +34,8 @@
 
 
 ## Resources and Acknowledgements
+Download Twitter Sentiment Dataset from http://thinknook.com/twitter-sentiment-analysis-training-corpus-dataset-2012-09-22/
+
 Thank you all for letting the world use this!
 
 Keras.io https://keras.io/
