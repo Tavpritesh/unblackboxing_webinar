@@ -1,28 +1,38 @@
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
-import tensorflow as tf
 from sklearn.datasets import fetch_lfw_people
 
 from facial_recognition.preprocessing import lfw_train_test_split, FacePreprocessor, tensor2img, img2tensor
+from facial_recognition.model import FaceClassifier
 
+LOCAL_DIR = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models'
+REMOTE_DIR = 'input/'
+MODEL_FILENAME = 'facenet.h5py'
+
+if NEPTUNE:   
+    MODEL_FILEPATH = os.path.join(REMOTE_DIR, EMBEDDING_MODEL_FILENAME)
+    DATA_FILEPATH = os.path.join(REMOTE_DIR, DATA_FILENAME)
+    PREP_DUMP_FILEPATH = os.path.join(REMOTE_DIR, PREP_DUMP_FILENAME)
+    CLASS_DUMP_FILEPATH = os.path.join(REMOTE_DIR, CLASS_DUMP_FILENAME)
+else:
+    MODEL_FILEPATH = os.path.join(LOCAL_DIR, EMBEDDING_MODEL_FILENAME)
+    DATA_FILEPATH = os.path.join(LOCAL_DIR, DATA_FILENAME)
+    PREP_DUMP_FILEPATH = os.path.join(LOCAL_DIR, PREP_DUMP_FILENAME)
+    CLASS_DUMP_FILEPATH = os.path.join(LOCAL_DIR, CLASS_DUMP_FILENAME)
 
 NEPTUNE = False
 if NEPTUNE:
-    DATA_DIR = 'input/scikit_learn_data'
-    MODEL_FILEPATH = 'input/models/facenet.h5py'
-    from facial_recognition.model import FaceClassifierNeptune as FaceClassifier
-
+    SCIKIT_DATA_DIR = 'input/scikit_learn_data'
+    MODEL_FILEPATH = os.path.join(REMOTE_DIR, MODEL_FILENAME)
 else:
-    DATA_DIR = '/mnt/ml-team/homes/jakub.czakon/.data/scikit_learn_data'
-    MODEL_FILEPATH = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models/facenet.h5py'
-    from facial_recognition.model import FaceClassifier
-
-
+    SCIKIT_DATA_DIR = '/mnt/ml-team/homes/jakub.czakon/.data/scikit_learn_data'
+    MODEL_FILEPATH = os.path.join(LOCAL_DIR, MODEL_FILENAME)
+    
 if __name__ == '__main__':
     
-    lfw_people = fetch_lfw_people(min_faces_per_person=100, resize=1.0, color=True, data_home=DATA_DIR)
+    lfw_people = fetch_lfw_people(min_faces_per_person=100, resize=1.0, color=True, data_home=SCIKIT_DATA_DIR)
 
     (X_train, y_train), (X_test,y_test) = lfw_train_test_split(lfw_people, train_size=0.8)
     print('Data loaded')
@@ -31,10 +41,8 @@ if __name__ == '__main__':
     X_train, y_train = face_prep.fit_transform(X=X_train, y=y_train)
     X_test, y_test = face_prep.transform(X=X_test, y=y_test)
     
-    with tf.device('/gpu:1'):
+    print('Data preprocessed')
+    face_classifier = FaceClassifier(input_shape=(125, 94, 3), classes=5, 
+                                      model_save_filepath=MODEL_FILEPATH, neptune=NEPTUNE)
 
-        print('Data preprocessed')
-        face_classifier = FaceClassifier(input_shape=(125, 94, 3), classes=5, 
-                                         model_save_filepath=MODEL_FILEPATH)
-
-        face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=8, epochs=30)
+    face_classifier.train((X_train, y_train), (X_test,y_test), batch_size=8, epochs=30)

@@ -1,13 +1,18 @@
 import numpy as np
-
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.base import BaseEstimator,TransformerMixin
 from sklearn.externals import joblib
-
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
+
+def read_tweets(filepath):
+    tweets = pd.read_csv(filepath, error_bad_lines=False)
+    tweets = tweets[['Sentiment', 'SentimentText']]
+    tweets.columns = ['sentiment','tweet']
+    return tweets
 
 def tweet_train_test_split(tweet_dataset, **kwargs):
     train, test = train_test_split(tweet_dataset, **kwargs)  

@@ -3,6 +3,7 @@ from keras.callbacks import Callback, TensorBoard, ModelCheckpoint
 
 from experiment.utils import false_prediction_neptune_image, TARGET_NAMES
 
+TENSORBOARD_LOGDIR = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/tensorboard_logs'
 
 class BatchEndCallback(Callback):
     def __init__(self, neptune_organizer=None):
@@ -45,7 +46,6 @@ class EpochEndCallback(Callback):
                 y_pred = self.image_model.predict(X_test)
                 y_pred = np.argmax(y_pred, axis=1)
                 y_test = np.argmax(y_test, axis=1)               
-                #import pdb; pdb.set_trace()
                 
                 for index, (prediction, actual) in enumerate(zip(y_pred, y_test)):
                     if prediction != actual:
@@ -57,13 +57,13 @@ class EpochEndCallback(Callback):
                                                                                     y=false_prediction_image)
                         
             
-class TensorboardCallback(TensorBoard):
-    def __init__(self):
-        self.log_dir = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/tensorboard_logs'
-        self.histogram_freq = 2
-        self.merged = None
-        self.write_graph = True
-        self.write_images = False
-        self.embeddings_freq = 0
-        self.embeddings_layer_names = None
-        self.embeddings_metadata = None
+def TensorBoardCallback(batch_size):
+    return TensorBoard(log_dir=TENSORBOARD_LOGDIR,
+                       histogram_freq=2,
+                       batch_size=batch_size,
+                       write_graph=True,
+                       write_grads=False,
+                       write_images=False,
+                       embeddings_freq=0,
+                       embeddings_layer_names=None,
+                       embeddings_metadata=None)

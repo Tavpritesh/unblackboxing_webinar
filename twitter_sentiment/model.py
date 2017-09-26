@@ -12,7 +12,16 @@ from experiment.neptune_monitoring import NeptuneOrganizer
 from experiment.callbacks import BatchEndCallback, EpochEndCallback, ModelCheckpoint
 
 
-class TweetClassifier(object):
+def TweetClassifier(architecture, max_nr_words, sequence_length, embedding_dim, path_to_word_embeddings, 
+                 word_index, classes, model_save_filepath, neptune):
+    if neptune:
+        return TweetClassifierNeptune(architecture, max_nr_words, sequence_length, embedding_dim, path_to_word_embeddings, 
+                 word_index, classes, model_save_filepath)
+    else:
+        return TweetClassifierBasic(architecture, max_nr_words, sequence_length, embedding_dim, path_to_word_embeddings, 
+                 word_index, classes, model_save_filepath)
+
+class TweetClassifierBasic(object):
     def __init__(self, architecture, max_nr_words, sequence_length, embedding_dim, path_to_word_embeddings, 
                  word_index, classes, model_save_filepath):
         self.neptune_organizer=None
@@ -72,7 +81,7 @@ class TweetClassifier(object):
         return embeddings
     
     
-class TweetClassifierNeptune(TweetClassifier):
+class TweetClassifierNeptune(TweetClassifierBasic):
     def __init__(self, architecture, max_nr_words, sequence_length, embedding_dim, 
                  path_to_word_embeddings, word_index, classes, model_save_filepath):
         super(TweetClassifierNeptune, self).__init__(architecture, max_nr_words, sequence_length, 

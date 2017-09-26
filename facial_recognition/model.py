@@ -6,10 +6,15 @@ from keras.applications.vgg16 import VGG16
 import keras.backend as K
 
 from experiment.neptune_monitoring import NeptuneOrganizer
-from experiment.callbacks import BatchEndCallback, EpochEndCallback, ModelCheckpoint, TensorboardCallback
+from experiment.callbacks import BatchEndCallback, EpochEndCallback, ModelCheckpoint, TensorBoardCallback
 
+def FaceClassifier(input_shape, classes, model_save_filepath, neptune):
+    if neptune:
+        return FaceClassifierNeptune(input_shape, classes, model_save_filepath)
+    else:
+        return FaceClassifierBasic(input_shape, classes, model_save_filepath)
 
-class FaceClassifier(object):
+class FaceClassifierBasic(object):
     def __init__(self, input_shape, classes, model_save_filepath):        
         self.model_save_filepath = model_save_filepath  
         
@@ -50,7 +55,7 @@ class FaceClassifier(object):
         self.datagen.fit(X_train)
         steps = len(X_train)/batch_size
         
-        tensorboard_callback = TensorboardCallback()
+        tensorboard_callback = TensorBoardCallback(batch_size)
         checkpoint = ModelCheckpoint(filepath=self.model_save_filepath)
         batch_end_callback = BatchEndCallback(self.neptune_organizer)
         epoch_end_callback = EpochEndCallback(self.neptune_organizer, 
@@ -59,13 +64,13 @@ class FaceClassifier(object):
         self.facenet.fit_generator(self.datagen.flow(X_train, y_train, batch_size),
                           steps_per_epoch=steps,
                           validation_data=[X_valid, y_valid],
-                          callbacks=[batch_end_callback, epoch_end_callback, #tensorboard_callback, 
+                          callbacks=[batch_end_callback, epoch_end_callback, tensorboard_callback, 
                                      checkpoint],
                           **kwargs)  
         K.set_session(self.old_session)
 
     
-class FaceClassifierNeptune(FaceClassifier):
+class FaceClassifierNeptune(FaceClassifierBasic):
     def __init__(self, input_shape, classes, model_save_filepath):   
         super(FaceClassifierNeptune, self).__init__(input_shape, classes, model_save_filepath)
         
