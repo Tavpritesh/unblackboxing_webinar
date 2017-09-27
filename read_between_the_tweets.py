@@ -15,12 +15,12 @@ from twitter_sentiment.model import TweetClassifier
 MAX_WORDS = 20000
 MAX_SEQ_LEN = 30
 EMBEDDING_DIM = 50
-ARCHITECTURE = arch_lstm
+ARCHITECTURE = arch_conv1d
 LOCAL_DIR = '/mnt/ml-team/homes/jakub.czakon/.unblackboxing_webinar_data/models'
 REMOTE_DIR = ''
 EMBEDDING_MODEL_FILENAME = 'glove.twitter.27B.50d.txt'
 PREP_DUMP_FILENAME = 'tweet_preprocessor.pkl'
-CLASS_DUMP_FILENAME = 'tweetnetLSTM.h5'
+CLASS_DUMP_FILENAME = 'tweetnetConv1D.h5'
 NEPTUNE = False
 if NEPTUNE:   
     DATA_FILEPATH = 'input/tweets/Sentiment Analysis Dataset.csv'

@@ -40,13 +40,13 @@ class ClassHeatmap():
 
         return heatmap
 
-    def plot_cam(self, img_path, label_list=None):
-        return self.plot(self.generate_cam, img_path, label_list)
+    def plot_cam(self, img_path, label_list=None, figsize=(16,12)):
+        return self.plot(self.generate_cam, img_path, label_list, figsize)
     
-    def plot_saliency(self, img_path, label_list=None):
-        return self.plot(self.generate_saliency, img_path, label_list)
+    def plot_saliency(self, img_path, label_list=None, figsize=(16,12)):
+        return self.plot(self.generate_saliency, img_path, label_list, figsize)
     
-    def plot(self, vis_func, img_path, label_list):
+    def plot(self, vis_func, img_path, label_list, figsize):
         img = utils.load_img(img_path, target_size=self.img_shape_)
         img = img[:,:,:3]
         
@@ -62,6 +62,8 @@ class ClassHeatmap():
                 heatmap = vis_func(img, label_id)
                 for p in prediction_text:
                     print(p[1:]) 
+                    
+                plt.figure(figsize=figsize)
                 plt.subplot(1,2,1)
                 plt.title('label:%s\nscore:%s'%(text_label,label_proba))
                 plt.imshow(overlay(heatmap, img))
@@ -75,6 +77,8 @@ class ClassHeatmap():
                 text_label = label_list[label_id]
                 label_proba = np.round(predictions[0,label_id], 4)
                 heatmap = vis_func(img,label_id)
+                
+                plt.figure(figsize=figsize)
                 plt.subplot(1,2,1)
                 plt.title('label:%s\nscore:%s'%(text_label,label_proba))
                 plt.imshow(overlay(heatmap, img))

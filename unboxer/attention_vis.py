@@ -18,10 +18,10 @@ class AttentionVisualizer(TweetPredictor):
     def type_and_vis(self):
         def input_box(tweet, grads, activations, over_words, over_units):
             self.vis_activation([tweet], grads, activations, over_words, over_units)
-        return interact(input_box, tweet='Type it in', grads=False, activations=True, 
-                        over_words=False, over_units=True)
+        return interact(input_box, tweet='This is a great tool', grads=False, activations=True, 
+                        over_words=True, over_units=False)
     
-    def vis_activation(self, tweet, grads=False, activations=True,  over_words=False, over_units=True):  
+    def vis_activation(self, tweet, grads=False, activations=True,  over_words=True, over_units=False):  
         pred = self.predict(tweet)
         act_grad_matrix, layer_labels, text_labels = self._get_activations_gradients(tweet, grads, 
                                                                                      activations, over_words, over_units)

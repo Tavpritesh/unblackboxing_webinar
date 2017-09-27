@@ -19,11 +19,14 @@ class DeepVis():
         self.layer_filter_ids_ = self._build_layer_filter_dict(self.model_)           
         self.save_dir_ = save_dir
     
-    def browse(self):
+    def browse(self, figsize=(16,10), labels=None):        
         def plot(layer_id, filter_id):
             filepath = '{}/{}/{}/img.jpg'.format(self.save_dir_, 
-                                                 layer_id, filter_id)
+                                                 layer_id, filter_id)            
             img = plt.imread(filepath)
+            plt.figure(figsize=figsize)
+            if labels:
+                plt.title('Label: {}'.format(labels[int(filter_id)]))
             plt.imshow(img)
             plt.show()
         return interact(plot, layer_id='1',filter_id='0')

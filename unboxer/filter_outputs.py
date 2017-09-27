@@ -1,4 +1,7 @@
 import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+
 import argparse
 
 from keras.applications.vgg16 import VGG16
@@ -17,11 +20,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
+    print(os.listdir(args.img_folder))
+    
     model = VGG16(include_top=True)
     tmp_dir = os.path.join(args.img_folder,'.tmp')
     if not os.path.exists(tmp_dir): os.makedirs(tmp_dir)
     server.launch(model, 
                   input_folder=args.img_folder,
                   temp_folder=tmp_dir,
-                  port=args.port
-                 )
+                  port=args.port)
