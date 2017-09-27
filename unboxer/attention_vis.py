@@ -27,8 +27,8 @@ class AttentionVisualizer(TweetPredictor):
                                                                                      activations, over_words, over_units)
 
         plt.figure(figsize=(14,4))
-        ax = sns.heatmap(act_grad_matrix, xticklabels=text_labels, 
-                         yticklabels=layer_labels)
+        cmap = sns.diverging_palette(220, 20, n=7)
+        ax = sns.heatmap(act_grad_matrix, xticklabels=text_labels, yticklabels=layer_labels, cmap=cmap)
         ax.xaxis.tick_top()
         plt.yticks(rotation=0) 
         plt.xticks(rotation=90) 
